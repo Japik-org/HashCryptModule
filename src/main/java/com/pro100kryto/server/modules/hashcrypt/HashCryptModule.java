@@ -2,6 +2,8 @@ package com.pro100kryto.server.modules.hashcrypt;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+import com.pro100kryto.server.livecycle.controller.LiveCycleController;
+import com.pro100kryto.server.livecycle.controller.LiveCycleImplId;
 import com.pro100kryto.server.module.AModule;
 import com.pro100kryto.server.module.BaseModuleSettings;
 import com.pro100kryto.server.module.ModuleConnectionParams;
@@ -70,10 +72,15 @@ public class HashCryptModule extends AModule<ICryptModuleConnection> {
     }
 
     @Override
-    protected void setupSettingsBeforeInit() throws Throwable {
-        settings.put(BaseModuleSettings.KEY_CONNECTION_MULTIPLE_ENABLED, false);
-        settings.put(BaseModuleSettings.KEY_CONNECTION_CREATE_AFTER_INIT_ENABLED, true);
+    protected void initLiveCycleController(LiveCycleController liveCycleController) {
+        super.initLiveCycleController(liveCycleController);
 
-        super.setupSettingsBeforeInit();
+        liveCycleController.getInitImplQueue().put(new LiveCycleImplId(
+                "put settings",
+                LiveCycleController.PRIORITY_HIGHEST
+        ), () -> {
+            settings.put(BaseModuleSettings.KEY_CONNECTION_MULTIPLE_ENABLED, false);
+            settings.put(BaseModuleSettings.KEY_CONNECTION_CREATE_AFTER_INIT_ENABLED, true);
+        });
     }
 }

@@ -1,3 +1,7 @@
 Manifest-Version: 1.0
+
+Name: Module-Impl
+Shared-Subtype: Crypt
+Subtype: HashCrypt
+Version: 0.1.0
 Base-Package: com.pro100kryto.server
-Connection-Type: Crypt
