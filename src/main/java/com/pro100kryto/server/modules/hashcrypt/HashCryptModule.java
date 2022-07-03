@@ -11,7 +11,7 @@ import com.pro100kryto.server.module.ModuleParams;
 import com.pro100kryto.server.modules.crypt.connection.ICryptModuleConnection;
 import org.jetbrains.annotations.NotNull;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -54,19 +54,26 @@ public class HashCryptModule extends AModule<ICryptModuleConnection> {
                 throw new IllegalArgumentException("Unknown hashing algorithm '" + ha + "'");
         }
 
-        final int saltLen = settings.getIntOrDefault("salt-length", 64);
         final byte[] localSalt;
 
-        if (settings.containsKey("salt-local")) {
-            localSalt = settings.get("salt-local").getBytes(StandardCharsets.UTF_8);
-        } else {
-            localSalt = new byte[saltLen];
+        final String type = settings.getOrDefault("salt-local-type", "disabled");
+
+        if (type.equals("random")) {
+            localSalt = new byte[settings.getIntOrDefault("salt-local-length", 64)];
             new Random().nextBytes(localSalt);
             logger.info("random local salt is " + Arrays.toString(localSalt));
+
+        } else if (type.equals("charset")) {
+            localSalt = settings.get("salt-local").getBytes(Charset.forName(settings.getOrDefault("salt-local-charset", "UTF-8")));
+
+        } else {
+            localSalt = new byte[0];
+            logger.warn("local salt is disabled!");
         }
 
-        return new HashCryptModuleConnection(this, params, hashFunction,
-                saltLen,
+        return new HashCryptModuleConnection(this,
+                params,
+                hashFunction,
                 localSalt
         );
     }

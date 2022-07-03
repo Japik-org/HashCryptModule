@@ -9,59 +9,51 @@ import org.jetbrains.annotations.NotNull;
 import java.rmi.RemoteException;
 import java.util.Random;
 
-public final class HashCryptModuleConnection extends AModuleConnection<HashCryptModule, ICryptModuleConnection> implements ICryptModuleConnection {
+public final class HashCryptModuleConnection
+        extends AModuleConnection<HashCryptModule, ICryptModuleConnection>
+        implements ICryptModuleConnection {
 
     private final Random random = new Random();
     private final HashFunction hashFunction;
-    private final int saltLen;
     private final byte[] localSalt;
 
     public HashCryptModuleConnection(@NotNull HashCryptModule module, ModuleConnectionParams params,
-                                     HashFunction hashFunction, int saltLen, byte[] localSalt) {
+                                     HashFunction hashFunction, byte[] localSalt) {
         super(module, params);
         this.hashFunction = hashFunction;
-        this.saltLen = saltLen;
         this.localSalt = localSalt;
     }
 
     @Override
-    public int getCryptLen() {
-        return hashFunction.bits()/8;
-    }
-
-    @Override
-    public byte[] crypt(byte[] cryptOut, byte[] data, byte[] salt) throws RemoteException {
-        hashFunction.hashBytes(
-                combineSalt(
+    public byte[] crypt(byte[] data, byte[] salt) throws RemoteException {
+        return hashFunction.hashBytes(
+                combine(
                         data,
-                        combineSalt(localSalt, salt)
+                        combine(localSalt, salt)
                 )
-        ).writeBytesTo(cryptOut, 0, cryptOut.length);
-        return cryptOut;
+        ).asBytes();
     }
 
     @Override
-    public byte[] decrypt(byte[] dataOut, byte[] crypt, byte[] salt) {
+    public byte[] decrypt(byte[] crypt, byte[] salt) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public int getSaltLen() {
-        return saltLen;
-    }
-
-    @Override
-    public byte[] randomSalt(byte[] saltOut) {
+    public byte[] randomSalt(int len) {
+        byte[] saltOut = new byte[len];
         random.nextBytes(saltOut);
         return saltOut;
     }
 
     @Override
-    public byte[] combineSalt(byte[] saltOut, byte[] salt1, byte[] salt2) {
-        System.arraycopy(salt1, 0, saltOut, 0, Math.min(salt1.length, saltOut.length));
-        for (int i = 0; i < Math.max(salt2.length, saltOut.length); i++) {
-            saltOut[i%saltOut.length] += salt2[i%salt2.length];
+    public byte[] combine(byte[] arr1, byte[] arr2) {
+        final int len = Math.max(arr1.length, arr2.length);
+        byte[] out = new byte[len];
+        System.arraycopy(arr1, 0, out, 0, arr1.length);
+        for (int i = 0; i < arr2.length; i++) {
+            out[i] += arr2[i];
         }
-        return saltOut;
+        return out;
     }
 }
