@@ -1,14 +1,14 @@
-package com.pro100kryto.server.modules.hashcrypt;
+package com.japik.modules.hashcrypt;
 
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
-import com.pro100kryto.server.livecycle.controller.LiveCycleController;
-import com.pro100kryto.server.livecycle.controller.LiveCycleImplId;
-import com.pro100kryto.server.module.AModule;
-import com.pro100kryto.server.module.BaseModuleSettings;
-import com.pro100kryto.server.module.ModuleConnectionParams;
-import com.pro100kryto.server.module.ModuleParams;
-import com.pro100kryto.server.modules.crypt.connection.ICryptModuleConnection;
+import com.japik.livecycle.controller.LiveCycleController;
+import com.japik.livecycle.controller.LiveCycleImplId;
+import com.japik.module.AModule;
+import com.japik.module.BaseModuleSettings;
+import com.japik.module.ModuleConnectionParams;
+import com.japik.module.ModuleParams;
+import com.japik.modules.crypt.connection.ICryptModuleConnection;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;

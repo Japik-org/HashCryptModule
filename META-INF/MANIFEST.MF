@@ -3,5 +3,5 @@ Manifest-Version: 1.0
 Name: Module-Impl
 Shared-Subtype: Crypt
 Subtype: HashCrypt
-Version: 1.0
-Base-Package: com.pro100kryto.server
+Version: 2.0
+Base-Package: com.japik

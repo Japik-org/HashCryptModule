@@ -1,9 +1,9 @@
-package com.pro100kryto.server.modules.hashcrypt;
+package com.japik.modules.hashcrypt;
 
 import com.google.common.hash.HashFunction;
-import com.pro100kryto.server.module.AModuleConnection;
-import com.pro100kryto.server.module.ModuleConnectionParams;
-import com.pro100kryto.server.modules.crypt.connection.ICryptModuleConnection;
+import com.japik.module.AModuleConnection;
+import com.japik.module.ModuleConnectionParams;
+import com.japik.modules.crypt.connection.ICryptModuleConnection;
 import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
