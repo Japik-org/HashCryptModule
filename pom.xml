@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.japik.modules</groupId>
-    <artifactId>HashCryptModule</artifactId>
+    <artifactId>hashcrypt-module</artifactId>
     <version>2.0</version>
 
     <properties>
@@ -16,12 +16,11 @@
     <dependencies>
         <dependency>
             <groupId>com.japik</groupId>
-            <artifactId>Japik</artifactId>
-            <version>[0.6.0, 0.7.0)</version>
+            <artifactId>japik</artifactId>
         </dependency>
         <dependency>
             <groupId>com.japik.modules</groupId>
-            <artifactId>CryptModule-connection</artifactId>
+            <artifactId>cryptmodule-shared</artifactId>
             <version>[2.0, 3.0)</version>
         </dependency>
     </dependencies>
